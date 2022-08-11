@@ -18,6 +18,7 @@
 cd "$(dirname "$0")" || exit 1
 PATH=../src:$PATH
 SIGV1=0
+
 source ./functions.sh
 
 _require cmp evmctl getfattr openssl xxd

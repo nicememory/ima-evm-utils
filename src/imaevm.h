@@ -48,7 +48,9 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <openssl/rsa.h>
+#ifdef CONFIG_ENGINE
 #include <openssl/engine.h>
+#endif
 
 #ifdef USE_FPRINTF
 #define do_log(level, fmt, args...)	\
