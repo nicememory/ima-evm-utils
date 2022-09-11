@@ -251,6 +251,7 @@ EVP_PKEY *read_pub_pkey(const char *keyfile, int x509)
 {
 	FILE *fp;
 	EVP_PKEY *pkey = NULL;
+	struct stat st;
 
 	if (!keyfile)
 		return NULL;
@@ -264,6 +265,16 @@ EVP_PKEY *read_pub_pkey(const char *keyfile, int x509)
 	}
 
 	if (x509) {
+		if (fstat(fileno(fp), &st) == -1)
+			goto out;
+
+		if ((st.st_mode & S_IFMT) != S_IFREG) {
+			if (imaevm_params.verbose > LOG_INFO)
+				log_err("Keyfile is not regular file: %s\n",
+					 keyfile);
+			goto out;
+		}
+
 		X509 *crt = d2i_X509_fp(fp, NULL);
 
 		if (!crt) {
