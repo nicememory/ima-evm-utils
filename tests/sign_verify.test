@@ -414,8 +414,8 @@ sign_verify  prime256v1 sha384 0x030205:K:004[345678]
 sign_verify  prime256v1 sha512 0x030206:K:004[345678]
 
 # If openssl 3.0 is installed, test the SM2/3 algorithm combination
-if [ -x /opt/openssl3/bin/openssl ]; then
-  PATH=/opt/openssl3/bin:$PATH LD_LIBRARY_PATH=/opt/openssl3/lib \
+ssl_version=$(openssl version | sed -e 's/^OpenSSL //' | sed -e 's/ .*//')
+if test "${ssl_version::1}" = "3"; then
     sign_verify  sm2    sm3    0x030211:K:004[345678]
 fi
 
